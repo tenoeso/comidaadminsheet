@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inscripción comida</title>
 <style>
@@ -70,7 +69,7 @@
 
         <form id="form" class="question" onsubmit="enviar(event)">
           <label for="nombre">Nome</label>
-          <input id="nombre" type="text" placeholder="Escribe o teu nome" required>
+          <input id="nombre" type="text" placeholder="Escribe o teu nome" required="">
 
           <label>Que queres comer?</label>
           <div class="food-grid">
@@ -79,7 +78,7 @@
             <button type="button" class="food-btn" data-op="ambos">Ambos</button>
           </div>
 
-          <button id="submit" class="submit-btn" type="submit" disabled>Confirmar inscrición</button>
+          <button id="submit" class="submit-btn" type="submit" disabled="">Confirmar inscrición</button>
           <div id="msg" class="mensaje"></div>
         </form>
 
@@ -251,5 +250,5 @@
   cargar();
   setInterval(cargar, 5000);
 </script>
-</body>
-</html>
+
+</body></html>
