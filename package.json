@@ -1,0 +1,13 @@
+{
+  "name": "comida-app-admin-simple",
+  "version": "1.0.0",
+  "description": "App web de inscripciones con zona admin para borrar usuarios mal inscritos y guardar en Google Sheets",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "googleapis": "^144.0.0"
+  }
+}

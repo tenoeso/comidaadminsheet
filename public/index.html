@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscripción comida</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    background:
+      linear-gradient(rgba(25,18,12,0.55), rgba(25,18,12,0.55)),
+      url('./assets/cartel-fondo.jpeg') center center / cover no-repeat fixed;
+  }
+  .overlay { min-height: 100vh; display: grid; grid-template-columns: 1.08fr 0.92fr; }
+  .main { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+  .card { width: 100%; max-width: 580px; background: rgba(34,24,16,0.82); border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; padding: 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.35); }
+  h1,h2,h3 { margin-top: 0; line-height: 1.1; }
+  .lead { color: rgba(255,255,255,0.84); margin-bottom: 24px; }
+  .question { display: none; }
+  .question.active { display: block; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  button, input { font: inherit; border-radius: 10px; }
+  .choice-btn, .food-btn, .submit-btn, .admin-btn { min-height: 46px; padding: 12px 16px; border: none; cursor: pointer; }
+  .choice-btn, .food-btn, .admin-btn.secondary { background: rgba(255,255,255,0.94); color: #2f2319; }
+  .food-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+  .food-btn.selected { background: #d5a253; color: #2d1b0d; font-weight: bold; }
+  label { display: block; margin: 18px 0 8px; font-weight: bold; }
+  input { width: 100%; min-height: 46px; padding: 0 14px; border: 1px solid rgba(255,255,255,0.2); }
+  .submit-btn, .admin-btn.primary { width: 100%; margin-top: 22px; background: #8d5a2b; color: white; }
+  .sidebar { background: rgba(15,10,8,0.72); border-left: 1px solid rgba(255,255,255,0.08); padding: 32px 24px; }
+  .contador, .help { color: rgba(255,255,255,0.75); margin: 14px 0; }
+  .lista { display: grid; gap: 10px; margin-bottom: 26px; }
+  .item { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.08); border-radius: 10px; }
+  .item-info { display: grid; gap: 4px; }
+  .tag { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+  .tag.churrasco { background: #a44923; }
+  .tag.pulpo { background: #286b8a; }
+  .tag.ambos { background: #6d3b8d; }
+  .admin-box { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .admin-login, .admin-panel { background: rgba(255,255,255,0.06); border-radius: 14px; padding: 16px; }
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+  .admin-list { display: grid; gap: 10px; margin-top: 16px; }
+  .admin-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.08); border-radius: 10px; }
+  .delete-btn { border: none; background: #8f2f2f; color: white; padding: 10px 14px; border-radius: 10px; cursor: pointer; min-height: 42px; }
+  .mensaje { margin-top: 14px; font-weight: bold; min-height: 24px; }
+  .mini { font-size: 13px; color: rgba(255,255,255,0.7); }
+  @media (max-width: 980px) { .overlay { grid-template-columns: 1fr; } .sidebar { border-left: 0; border-top: 1px solid rgba(255,255,255,0.08); } }
+  @media (max-width: 640px) { .row, .food-grid { grid-template-columns: 1fr; display: grid; } .card { padding: 22px; } h1 { font-size: 1.7rem; } .item, .admin-item { flex-direction: column; align-items: stretch; } }
+</style>
+</head>
+<body>
+  <div class="overlay">
+    <main class="main">
+      <section class="card">
+        <h1>Apúntate á comida</h1>
+        <p class="lead">Confirma se vas asistir e indica o teu nome e se queres churrasco, pulpo ou ambos.</p>
+
+        <div id="q1" class="question active">
+          <p><strong>Queres asistir?</strong></p>
+          <div class="row" style="margin-top: 14px;">
+            <button class="choice-btn" onclick="responder(true)">Sí</button>
+            <button class="choice-btn" onclick="responder(false)">Non</button>
+          </div>
+        </div>
+
+        <form id="form" class="question" onsubmit="enviar(event)">
+          <label for="nombre">Nome</label>
+          <input id="nombre" type="text" placeholder="Escribe o teu nome" required>
+
+          <label>Que queres comer?</label>
+          <div class="food-grid">
+            <button type="button" class="food-btn" data-op="churrasco">Churrasco</button>
+            <button type="button" class="food-btn" data-op="pulpo">Pulpo</button>
+            <button type="button" class="food-btn" data-op="ambos">Ambos</button>
+          </div>
+
+          <button id="submit" class="submit-btn" type="submit" disabled>Confirmar inscrición</button>
+          <div id="msg" class="mensaje"></div>
+        </form>
+
+        <div id="qno" class="question">
+          <p><strong>Entendido.</strong> Quedas convidado para a próxima.</p>
+        </div>
+      </section>
+    </main>
+
+    <aside class="sidebar">
+      <h2>Persoas apuntadas</h2>
+      <div id="contador" class="contador">Cargando...</div>
+      <div id="lista" class="lista"></div>
+
+      <div class="admin-box">
+        <h3>Administrador</h3>
+        <p class="help">Zona para borrar usuarios mal inscritos.</p>
+
+        <div id="adminLogin" class="admin-login">
+          <label for="adminKey">Clave de administrador</label>
+          <input id="adminKey" type="password" placeholder="Introduce la clave">
+          <button class="admin-btn primary" type="button" onclick="activarAdmin()">Entrar como admin</button>
+          <div id="adminMsg" class="mensaje"></div>
+        </div>
+
+        <div id="adminPanel" class="admin-panel">
+          <div class="row" style="margin-bottom: 10px;">
+            <button class="admin-btn secondary" type="button" onclick="cargar()">Actualizar lista</button>
+          </div>
+          <div class="mini">Solo desde aquí se puede borrar un usuario concreto.</div>
+          <div id="adminList" class="admin-list"></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+<script>
+  let opcion = null;
+  let adminKey = '';
+  const form = document.getElementById('form');
+  const nombre = document.getElementById('nombre');
+  const submit = document.getElementById('submit');
+  const msg = document.getElementById('msg');
+  const botones = [...document.querySelectorAll('.food-btn')];
+
+  function mostrar(id) {
+    document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function responder(asiste) {
+    if (asiste) mostrar('form');
+    else mostrar('qno');
+  }
+
+  function validar() {
+    submit.disabled = !(nombre.value.trim() && opcion);
+  }
+
+  nombre.addEventListener('input', validar);
+  botones.forEach(b => b.addEventListener('click', () => {
+    opcion = b.dataset.op;
+    botones.forEach(x => x.classList.toggle('selected', x === b));
+    validar();
+  }));
+
+  function escapeHtml(text) {
+    return String(text)
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#039;');
+  }
+
+  async function cargar() {
+    const res = await fetch('/api/inscripciones');
+    const data = await res.json();
+
+    const lista = document.getElementById('lista');
+    document.getElementById('contador').textContent = `Total: ${data.length} persoa(s)`;
+
+    if (!data.length) {
+      lista.innerHTML = '<div class="item">Aínda non hai inscritos.</div>';
+      document.getElementById('adminList').innerHTML = '<div class="admin-item">Aínda non hai inscritos.</div>';
+      return;
+    }
+
+    lista.innerHTML = data.map(p => `
+      <div class="item">
+        <div class="item-info">
+          <span>${escapeHtml(p.nombre)}</span>
+          <span class="mini">${new Date(p.fecha).toLocaleString('es-ES')}</span>
+        </div>
+        <span class="tag ${p.opcion}">${p.opcion}</span>
+      </div>
+    `).join('');
+
+    const adminList = document.getElementById('adminList');
+    adminList.innerHTML = data.map(p => `
+      <div class="admin-item">
+        <div class="item-info">
+          <span><strong>${escapeHtml(p.nombre)}</strong></span>
+          <span class="mini">${p.opcion} · ${new Date(p.fecha).toLocaleString('es-ES')}</span>
+        </div>
+        <button class="delete-btn" type="button" onclick="borrarUsuario('${p.id}')">Borrar</button>
+      </div>
+    `).join('');
+  }
+
+  async function enviar(e) {
+    e.preventDefault();
+    const res = await fetch('/api/inscripciones', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: nombre.value.trim(), opcion })
+    });
+
+    if (res.ok) {
+      msg.textContent = 'Inscrición rexistrada correctamente.';
+      form.reset();
+      opcion = null;
+      botones.forEach(x => x.classList.remove('selected'));
+      validar();
+      await cargar();
+      mostrar('q1');
+    } else {
+      msg.textContent = 'Houbo un erro ao gardar a inscrición.';
+    }
+  }
+
+  function activarAdmin() {
+    const clave = document.getElementById('adminKey').value.trim();
+    const adminMsg = document.getElementById('adminMsg');
+
+    if (!clave) {
+      adminMsg.textContent = 'Introduce la clave de administrador.';
+      return;
+    }
+
+    adminKey = clave;
+    document.getElementById('adminPanel').classList.add('active');
+    adminMsg.textContent = 'Modo administrador activado.';
+  }
+
+  async function borrarUsuario(id) {
+    if (!adminKey) {
+      alert('Debes entrar como administrador.');
+      return;
+    }
+
+    const confirmado = confirm('¿Seguro que quieres borrar este usuario mal inscrito?');
+    if (!confirmado) return;
+
+    const res = await fetch(`/api/admin/inscripciones/${id}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-key': adminKey }
+    });
+
+    if (res.ok) {
+      await cargar();
+    } else if (res.status === 401) {
+      alert('Clave de administrador incorrecta.');
+    } else {
+      alert('No se pudo borrar el usuario.');
+    }
+  }
+
+  cargar();
+  setInterval(cargar, 5000);
+</script>
+</body>
+</html>
