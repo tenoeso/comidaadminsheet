@@ -1,453 +1,323 @@
 <!DOCTYPE html>
-<html lang="gl">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirmación de comida</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscripción comida</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f7f6f2;
-      --surface: #ffffff;
-      --surface-2: #f3f0ec;
-      --text: #28251d;
-      --muted: #6e6b65;
-      --border: rgba(40, 37, 29, 0.12);
-      --primary: #01696f;
-      --primary-hover: #0c4e54;
-      --danger: #9f2f45;
-      --danger-hover: #7e2234;
-      --success: #2f6f2f;
-      --shadow: 0 12px 30px rgba(29, 27, 24, 0.08);
-      --radius: 18px;
-      --radius-sm: 12px;
+      --bg: #f6f4ef;
+      --panel: #fcfbf8;
+      --panel-2: #f1ede6;
+      --text: #25231d;
+      --muted: #716d66;
+      --border: #d9d3c8;
+      --primary: #0b6b69;
+      --primary-hover: #085250;
+      --danger: #a83b45;
+      --danger-hover: #812b34;
+      --success: #2e6d35;
+      --shadow: 0 10px 30px rgba(26, 22, 16, 0.08);
+      --radius: 16px;
     }
-
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(180deg, #fbfaf7 0%, var(--bg) 100%);
       color: var(--text);
+      background: linear-gradient(180deg, #f7f5f0 0%, #f2efe8 100%);
     }
-
     .wrap {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .grid {
+      width: min(1100px, calc(100% - 32px));
+      margin: 32px auto;
       display: grid;
-      grid-template-columns: 1.2fr 0.9fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 24px;
-      align-items: start;
     }
-
     .card {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(10px);
+      background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+    }
+    .hero {
       padding: 28px;
     }
-
     .eyebrow {
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--primary);
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    h1, h2 {
-      margin: 0 0 12px;
-      line-height: 1.1;
-    }
-
-    h1 { font-size: clamp(32px, 4vw, 50px); }
-    h2 { font-size: 24px; }
-
-    p {
-      margin: 0 0 18px;
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--panel-2);
       color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      margin-top: 16px;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.05;
+    }
+    .intro {
+      margin-top: 14px;
+      color: var(--muted);
+      max-width: 58ch;
       line-height: 1.6;
     }
-
+    .section {
+      padding: 24px 28px 28px;
+    }
+    .section + .section {
+      border-top: 1px solid var(--border);
+    }
     form {
       display: grid;
       gap: 16px;
-      margin-top: 24px;
+      margin-top: 18px;
     }
-
     label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    input[type="text"], input[type="password"], select {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: #fff;
-      color: var(--text);
-      font: inherit;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(1, 105, 111, 0.12);
-    }
-
-    .choices {
       display: grid;
-      gap: 10px;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 14px;
     }
-
-    .choice {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 14px 16px;
+    input, select {
+      width: 100%;
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--surface);
+      background: white;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 14px 15px;
+      font-size: 15px;
     }
-
-    .choice input { margin-top: 4px; }
-
-    .choice strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .actions, .admin-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
     button {
-      border: none;
-      border-radius: 999px;
-      padding: 13px 18px;
-      font: inherit;
-      font-weight: 700;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
-      min-height: 46px;
     }
-
     .btn-primary {
       background: var(--primary);
-      color: #fff;
+      color: white;
     }
-
     .btn-primary:hover { background: var(--primary-hover); }
-
     .btn-secondary {
-      background: var(--surface-2);
+      background: var(--panel-2);
       color: var(--text);
-      border: 1px solid var(--border);
     }
-
     .btn-danger {
       background: var(--danger);
-      color: #fff;
+      color: white;
     }
-
     .btn-danger:hover { background: var(--danger-hover); }
-
-    .message {
-      min-height: 24px;
+    .notice, .error, .empty {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
       font-size: 14px;
-      font-weight: 600;
-      margin-top: 6px;
     }
-
-    .message.error { color: var(--danger); }
-    .message.success { color: var(--success); }
-
-    .panel-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      margin-bottom: 16px;
+    .notice {
+      background: rgba(46, 109, 53, 0.1);
+      color: var(--success);
     }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 8px 12px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 600;
+    .error {
+      background: rgba(168, 59, 69, 0.1);
+      color: var(--danger);
     }
-
     .list {
       display: grid;
       gap: 12px;
       margin-top: 18px;
     }
-
     .item {
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr auto;
       padding: 16px;
-      background: var(--surface);
-      display: grid;
-      gap: 10px;
-    }
-
-    .item-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: start;
-    }
-
-    .item-name {
-      font-weight: 700;
-      font-size: 17px;
-    }
-
-    .meta {
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .empty {
-      border: 1px dashed var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      color: var(--muted);
-      background: var(--surface-2);
-    }
-
-    .admin-box {
-      display: grid;
-      gap: 14px;
-      padding: 18px;
-      border-radius: 16px;
-      background: var(--surface-2);
       border: 1px solid var(--border);
-      margin-top: 20px;
+      border-radius: 14px;
+      background: white;
+      align-items: center;
     }
-
-    .hidden { display: none; }
-
-    @media (max-width: 920px) {
-      .grid { grid-template-columns: 1fr; }
-      .wrap { padding: 16px; }
-      .card { padding: 20px; }
-      .item-top { flex-direction: column; }
+    .item strong {
+      display: block;
+      font-size: 16px;
+    }
+    .meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .admin-lock {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .admin-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    @media (max-width: 860px) {
+      .wrap {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <div class="grid">
-      <section class="card">
-        <div class="eyebrow">Confirmación</div>
-        <h1>Confirma a túa asistencia e escolle comida</h1>
-        <p>Introduce o teu nome e selecciona se queres churrasco, polbo ou ambas opcións. O rexistro gárdase e queda visible para administración.</p>
+    <section class="card">
+      <div class="hero">
+        <span class="eyebrow">Confirmación de asistencia</span>
+        <h1>Formulario de inscripción y elección de comida</h1>
+        <p class="intro">Cada inscripción se guarda automáticamente en Google Sheets y el administrador puede borrar registros erróneos y exportar CSV.</p>
+      </div>
 
+      <div class="section">
+        <h2>Inscripción</h2>
         <form id="form-inscripcion">
-          <div>
-            <label for="nombre">Nome e apelidos</label>
-            <input id="nombre" name="nombre" type="text" placeholder="Ex. Marta López" required>
-          </div>
+          <label>
+            Nombre y apellidos
+            <input id="nombre" name="nombre" type="text" placeholder="Ej. Marta López" required />
+          </label>
 
-          <fieldset class="choices">
-            <legend style="font-weight:700; margin-bottom: 4px;">Comida</legend>
-            <label class="choice">
-              <input type="radio" name="opcion" value="churrasco" required>
-              <span><strong>Churrasco</strong><span class="meta">Só churrasco.</span></span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="opcion" value="pulpo" required>
-              <span><strong>Polbo</strong><span class="meta">Só polbo.</span></span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="opcion" value="ambos" required>
-              <span><strong>Ambos</strong><span class="meta">Churrasco e polbo.</span></span>
-            </label>
-          </fieldset>
+          <label>
+            Asistencia
+            <select id="asistencia" name="asistencia" required>
+              <option value="">Selecciona una opción</option>
+              <option value="si">Sí asistiré</option>
+              <option value="no">No asistiré</option>
+            </select>
+          </label>
 
-          <div class="actions">
-            <button type="submit" class="btn-primary">Enviar inscrición</button>
-          </div>
-          <div id="mensaje-form" class="message" aria-live="polite"></div>
+          <label>
+            Menú / comida
+            <select id="comida" name="comida" required>
+              <option value="">Selecciona un menú</option>
+              <option value="carne">Carne</option>
+              <option value="pescado">Pescado</option>
+              <option value="vegetariano">Vegetariano</option>
+              <option value="vegano">Vegano</option>
+              <option value="infantil">Infantil</option>
+              <option value="sin-gluten">Sin gluten</option>
+            </select>
+          </label>
+
+          <button class="btn-primary" type="submit">Guardar inscripción</button>
         </form>
-      </section>
+        <div id="mensaje-form"></div>
+      </div>
+    </section>
 
-      <aside class="card">
-        <div class="panel-head">
-          <div>
-            <div class="eyebrow">Admin</div>
-            <h2>Panel de administración</h2>
+    <aside class="card">
+      <div class="section">
+        <h2>Administrador</h2>
+        <p class="small">Introduce la clave de administrador para habilitar el borrado de usuarios mal inscritos y la exportación CSV.</p>
+
+        <div class="admin-lock">
+          <label>
+            Clave admin
+            <input id="admin-key" type="password" placeholder="Tu clave de administrador" />
+          </label>
+          <div class="admin-row">
+            <button id="activar-admin" class="btn-primary" type="button">Activar modo admin</button>
+            <button id="descargar-csv" class="btn-secondary" type="button">Descargar CSV</button>
           </div>
-          <div id="admin-state" class="badge">Modo admin desactivado</div>
+          <div id="mensaje-admin"></div>
         </div>
+      </div>
 
-        <p>Activa o modo administrador coa túa clave para ver a listaxe, borrar inscritos e descargar o CSV.</p>
-
-        <div class="admin-box">
-          <div>
-            <label for="admin-key">Clave de administrador</label>
-            <input id="admin-key" type="password" placeholder="Introduce a clave">
-          </div>
-
-          <div class="admin-actions">
-            <button id="activar-admin" type="button" class="btn-primary">Activar modo admin</button>
-            <button id="salir-admin" type="button" class="btn-secondary hidden">Pechar modo admin</button>
-            <button id="descargar-csv" type="button" class="btn-secondary hidden">Descargar CSV</button>
-          </div>
-
-          <div id="mensaje-admin" class="message" aria-live="polite"></div>
-        </div>
-
-        <div id="lista-inscripciones" class="list"></div>
-      </aside>
-    </div>
+      <div class="section">
+        <h3>Inscritos</h3>
+        <div id="lista" class="list"></div>
+      </div>
+    </aside>
   </main>
 
   <script>
     const form = document.getElementById('form-inscripcion');
+    const lista = document.getElementById('lista');
     const mensajeForm = document.getElementById('mensaje-form');
     const mensajeAdmin = document.getElementById('mensaje-admin');
-    const lista = document.getElementById('lista-inscripciones');
-    const adminKeyInput = document.getElementById('admin-key');
     const activarAdminBtn = document.getElementById('activar-admin');
-    const salirAdminBtn = document.getElementById('salir-admin');
     const descargarCsvBtn = document.getElementById('descargar-csv');
-    const adminState = document.getElementById('admin-state');
+    const adminKeyInput = document.getElementById('admin-key');
 
     let adminKey = '';
     let adminActivo = false;
 
-    function setMessage(el, text, type = '') {
-      el.textContent = text;
-      el.className = 'message' + (type ? ' ' + type : '');
+    function setMessage(container, text, type) {
+      container.className = type;
+      container.textContent = text;
     }
 
-    function traducirComida(valor) {
-      if (valor === 'churrasco') return 'Churrasco';
-      if (valor === 'pulpo') return 'Polbo';
-      if (valor === 'ambos') return 'Ambos';
-      return valor || '-';
+    function clearMessage(container) {
+      container.className = '';
+      container.textContent = '';
     }
 
-    function actualizarUIAdmin() {
-      adminState.textContent = adminActivo ? 'Modo admin activado' : 'Modo admin desactivado';
-      salirAdminBtn.classList.toggle('hidden', !adminActivo);
-      descargarCsvBtn.classList.toggle('hidden', !adminActivo);
-      activarAdminBtn.textContent = adminActivo ? 'Admin activo' : 'Activar modo admin';
-      activarAdminBtn.disabled = adminActivo;
-      adminKeyInput.disabled = adminActivo;
+    function formatAsistencia(value) {
+      return value === 'si' ? 'Sí' : 'No';
+    }
+
+    function formatComida(value) {
+      const labels = {
+        'carne': 'Carne',
+        'pescado': 'Pescado',
+        'vegetariano': 'Vegetariano',
+        'vegano': 'Vegano',
+        'infantil': 'Infantil',
+        'sin-gluten': 'Sin gluten'
+      };
+      return labels[value] || value;
     }
 
     async function cargarInscripciones() {
-      lista.innerHTML = '<div class="empty">Cargando inscricións...</div>';
-
+      lista.innerHTML = '<div class="empty">Cargando inscripciones...</div>';
       try {
         const res = await fetch('/api/inscripciones');
         const data = await res.json();
 
-        if (!res.ok) throw new Error(data.error || 'No se pudieron cargar los datos');
+        if (!res.ok) {
+          throw new Error(data.error || 'No se pudieron cargar las inscripciones');
+        }
 
-        if (!Array.isArray(data) || data.length === 0) {
-          lista.innerHTML = '<div class="empty">Aínda non hai persoas inscritas.</div>';
+        if (!data.length) {
+          lista.innerHTML = '<div class="empty">Todavía no hay inscripciones.</div>';
           return;
         }
 
-        lista.innerHTML = data.map(item => {
-          const fecha = item.fecha ? new Date(item.fecha).toLocaleString('gl-ES') : '';
-          const boton = adminActivo
-            ? `<button class="btn-danger" data-delete-id="${item.id}">Borrar</button>`
-            : '';
+        lista.innerHTML = data.map(item => `
+          <article class="item">
+            <div>
+              <strong>${escapeHtml(item.nombre)}</strong>
+              <div class="meta">Asistencia: ${formatAsistencia(item.asistencia)} · Comida: ${formatComida(item.comida)}</div>
+            </div>
+            ${adminActivo ? `<button class="btn-danger" data-delete-id="${item.id}" type="button">Borrar</button>` : ''}
+          </article>
+        `).join('');
 
-          return `
-            <article class="item">
-              <div class="item-top">
-                <div>
-                  <div class="item-name">${escapeHtml(item.nombre || '')}</div>
-                  <div class="meta">Asistencia: ${escapeHtml(item.asistencia || 'Sí')}</div>
-                  <div class="meta">Comida: ${escapeHtml(traducirComida(item.comida || item.opcion || ''))}</div>
-                  <div class="meta">Data: ${escapeHtml(fecha)}</div>
-                </div>
-                ${boton}
-              </div>
-            </article>
-          `;
-        }).join('');
-      } catch (error) {
-        lista.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
-      }
-    }
-
-    function escapeHtml(texto) {
-      return String(texto)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
-    async function activarModoAdmin() {
-      const clave = adminKeyInput.value.trim();
-
-      if (!clave) {
-        setMessage(mensajeAdmin, 'Escribe la clave de administrador.', 'error');
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/admin/login', {
-          method: 'POST',
-          headers: { 'x-admin-key': clave }
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || 'No autorizado');
+        if (adminActivo) {
+          document.querySelectorAll('[data-delete-id]').forEach(btn => {
+            btn.addEventListener('click', () => borrarInscripcion(btn.dataset.deleteId));
+          });
         }
-
-        adminKey = clave;
-        adminActivo = true;
-        actualizarUIAdmin();
-        setMessage(mensajeAdmin, 'Modo administrador activado.', 'success');
-        cargarInscripciones();
       } catch (error) {
-        adminKey = '';
-        adminActivo = false;
-        actualizarUIAdmin();
-        setMessage(mensajeAdmin, error.message || 'No se pudo validar la clave.', 'error');
+        lista.innerHTML = `<div class="error">${escapeHtml(error.message)}</div>`;
       }
-    }
-
-    function salirModoAdmin() {
-      adminKey = '';
-      adminActivo = false;
-      adminKeyInput.value = '';
-      actualizarUIAdmin();
-      setMessage(mensajeAdmin, 'Modo administrador pechado.', 'success');
-      cargarInscripciones();
     }
 
     async function borrarInscripcion(id) {
@@ -456,7 +326,7 @@
         return;
       }
 
-      const confirmar = window.confirm('Seguro que queres borrar esta inscrición?');
+      const confirmar = window.confirm('¿Seguro que quieres borrar esta inscripción?');
       if (!confirmar) return;
 
       try {
@@ -464,34 +334,85 @@
           method: 'DELETE',
           headers: { 'x-admin-key': adminKey }
         });
-
         const data = await res.json();
 
         if (!res.ok) {
           throw new Error(data.error || 'No se pudo borrar');
         }
 
-        setMessage(mensajeAdmin, 'Inscrición borrada correctamente.', 'success');
+        setMessage(mensajeAdmin, 'Inscripción borrada correctamente.', 'notice');
         cargarInscripciones();
       } catch (error) {
-        setMessage(mensajeAdmin, error.message || 'Error al borrar.', 'error');
+        setMessage(mensajeAdmin, error.message, 'error');
       }
     }
 
-    async function descargarCsv() {
-      if (!adminActivo || !adminKey) {
-        setMessage(mensajeAdmin, 'Activa primero el modo admin.', 'error');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearMessage(mensajeForm);
+
+      const payload = {
+        nombre: document.getElementById('nombre').value,
+        asistencia: document.getElementById('asistencia').value,
+        comida: document.getElementById('comida').value
+      };
+
+      try {
+        const res = await fetch('/api/inscripciones', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'No se pudo guardar');
+        }
+
+        form.reset();
+        setMessage(mensajeForm, 'Inscripción guardada correctamente.', 'notice');
+        cargarInscripciones();
+      } catch (error) {
+        setMessage(mensajeForm, error.message, 'error');
+      }
+    });
+
+    activarAdminBtn.addEventListener('click', () => {
+      clearMessage(mensajeAdmin);
+      const clave = adminKeyInput.value.trim();
+
+      if (!clave) {
+        setMessage(mensajeAdmin, 'Escribe primero la clave de administrador.', 'error');
+        return;
+      }
+
+      adminKey = clave;
+      adminActivo = true;
+      setMessage(mensajeAdmin, 'Modo admin activado.', 'notice');
+      cargarInscripciones();
+    });
+
+    descargarCsvBtn.addEventListener('click', async () => {
+      clearMessage(mensajeAdmin);
+      const clave = adminKeyInput.value.trim();
+
+      if (!clave) {
+        setMessage(mensajeAdmin, 'Escribe la clave admin antes de descargar el CSV.', 'error');
         return;
       }
 
       try {
         const res = await fetch('/api/admin/export.csv', {
-          headers: { 'x-admin-key': adminKey }
+          headers: { 'x-admin-key': clave }
         });
 
         if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.error || 'No se pudo descargar el CSV');
+          let errorText = 'No se pudo descargar el CSV';
+          try {
+            const data = await res.json();
+            errorText = data.error || errorText;
+          } catch (_) {}
+          throw new Error(errorText);
         }
 
         const blob = await res.blob();
@@ -499,59 +420,23 @@
         const a = document.createElement('a');
         a.href = url;
         a.download = 'inscripciones.csv';
-        document.body.appendChild(a);
         a.click();
-        a.remove();
         URL.revokeObjectURL(url);
-        setMessage(mensajeAdmin, 'CSV descargado correctamente.', 'success');
+        setMessage(mensajeAdmin, 'CSV descargado correctamente.', 'notice');
       } catch (error) {
-        setMessage(mensajeAdmin, error.message || 'Error al descargar CSV.', 'error');
+        setMessage(mensajeAdmin, error.message, 'error');
       }
+    });
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
     }
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      setMessage(mensajeForm, '');
-
-      const nombre = document.getElementById('nombre').value.trim();
-      const opcion = form.querySelector('input[name="opcion"]:checked')?.value;
-
-      if (!nombre || !opcion) {
-        setMessage(mensajeForm, 'Completa o nome e a opción de comida.', 'error');
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/inscripciones', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nombre, opcion })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || 'No se pudo guardar la inscripción');
-        }
-
-        form.reset();
-        setMessage(mensajeForm, 'Inscrición gardada correctamente.', 'success');
-        cargarInscripciones();
-      } catch (error) {
-        setMessage(mensajeForm, error.message || 'Error ao enviar.', 'error');
-      }
-    });
-
-    activarAdminBtn.addEventListener('click', activarModoAdmin);
-    salirAdminBtn.addEventListener('click', salirModoAdmin);
-    descargarCsvBtn.addEventListener('click', descargarCsv);
-
-    lista.addEventListener('click', (event) => {
-      const id = event.target.getAttribute('data-delete-id');
-      if (id) borrarInscripcion(id);
-    });
-
-    actualizarUIAdmin();
     cargarInscripciones();
   </script>
 </body>
