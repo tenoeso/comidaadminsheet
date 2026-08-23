@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de comida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --surface-2: #f3f0ec;
+      --text: #28251d;
+      --muted: #6e6b65;
+      --border: rgba(40, 37, 29, 0.12);
+      --primary: #01696f;
+      --primary-hover: #0c4e54;
+      --danger: #9f2f45;
+      --danger-hover: #7e2234;
+      --success: #2f6f2f;
+      --shadow: 0 12px 30px rgba(29, 27, 24, 0.08);
+      --radius: 18px;
+      --radius-sm: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #fbfaf7 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    h1, h2 {
+      margin: 0 0 12px;
+      line-height: 1.1;
+    }
+
+    h1 { font-size: clamp(32px, 4vw, 50px); }
+    h2 { font-size: 24px; }
+
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    form {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"], input[type="password"], select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(1, 105, 111, 0.12);
+    }
+
+    .choices {
+      display: grid;
+      gap: 10px;
+    }
+
+    .choice {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+    }
+
+    .choice input { margin-top: 4px; }
+
+    .choice strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .actions, .admin-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 46px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .btn-danger:hover { background: var(--danger-hover); }
+
+    .message {
+      min-height: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .message.error { color: var(--danger); }
+    .message.success { color: var(--success); }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: var(--surface);
+      display: grid;
+      gap: 10px;
+    }
+
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .item-name {
+      font-weight: 700;
+      font-size: 17px;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .empty {
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      color: var(--muted);
+      background: var(--surface-2);
+    }
+
+    .admin-box {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 920px) {
+      .grid { grid-template-columns: 1fr; }
+      .wrap { padding: 16px; }
+      .card { padding: 20px; }
+      .item-top { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="grid">
+      <section class="card">
+        <div class="eyebrow">Confirmación</div>
+        <h1>Confirma a túa asistencia e escolle comida</h1>
+        <p>Introduce o teu nome e selecciona se queres churrasco, polbo ou ambas opcións. O rexistro gárdase e queda visible para administración.</p>
+
+        <form id="form-inscripcion">
+          <div>
+            <label for="nombre">Nome e apelidos</label>
+            <input id="nombre" name="nombre" type="text" placeholder="Ex. Marta López" required>
+          </div>
+
+          <fieldset class="choices">
+            <legend style="font-weight:700; margin-bottom: 4px;">Comida</legend>
+            <label class="choice">
+              <input type="radio" name="opcion" value="churrasco" required>
+              <span><strong>Churrasco</strong><span class="meta">Só churrasco.</span></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="opcion" value="pulpo" required>
+              <span><strong>Polbo</strong><span class="meta">Só polbo.</span></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="opcion" value="ambos" required>
+              <span><strong>Ambos</strong><span class="meta">Churrasco e polbo.</span></span>
+            </label>
+          </fieldset>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary">Enviar inscrición</button>
+          </div>
+          <div id="mensaje-form" class="message" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <aside class="card">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Admin</div>
+            <h2>Panel de administración</h2>
+          </div>
+          <div id="admin-state" class="badge">Modo admin desactivado</div>
+        </div>
+
+        <p>Activa o modo administrador coa túa clave para ver a listaxe, borrar inscritos e descargar o CSV.</p>
+
+        <div class="admin-box">
+          <div>
+            <label for="admin-key">Clave de administrador</label>
+            <input id="admin-key" type="password" placeholder="Introduce a clave">
+          </div>
+
+          <div class="admin-actions">
+            <button id="activar-admin" type="button" class="btn-primary">Activar modo admin</button>
+            <button id="salir-admin" type="button" class="btn-secondary hidden">Pechar modo admin</button>
+            <button id="descargar-csv" type="button" class="btn-secondary hidden">Descargar CSV</button>
+          </div>
+
+          <div id="mensaje-admin" class="message" aria-live="polite"></div>
+        </div>
+
+        <div id="lista-inscripciones" class="list"></div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('form-inscripcion');
+    const mensajeForm = document.getElementById('mensaje-form');
+    const mensajeAdmin = document.getElementById('mensaje-admin');
+    const lista = document.getElementById('lista-inscripciones');
+    const adminKeyInput = document.getElementById('admin-key');
+    const activarAdminBtn = document.getElementById('activar-admin');
+    const salirAdminBtn = document.getElementById('salir-admin');
+    const descargarCsvBtn = document.getElementById('descargar-csv');
+    const adminState = document.getElementById('admin-state');
+
+    let adminKey = '';
+    let adminActivo = false;
+
+    function setMessage(el, text, type = '') {
+      el.textContent = text;
+      el.className = 'message' + (type ? ' ' + type : '');
+    }
+
+    function traducirComida(valor) {
+      if (valor === 'churrasco') return 'Churrasco';
+      if (valor === 'pulpo') return 'Polbo';
+      if (valor === 'ambos') return 'Ambos';
+      return valor || '-';
+    }
+
+    function actualizarUIAdmin() {
+      adminState.textContent = adminActivo ? 'Modo admin activado' : 'Modo admin desactivado';
+      salirAdminBtn.classList.toggle('hidden', !adminActivo);
+      descargarCsvBtn.classList.toggle('hidden', !adminActivo);
+      activarAdminBtn.textContent = adminActivo ? 'Admin activo' : 'Activar modo admin';
+      activarAdminBtn.disabled = adminActivo;
+      adminKeyInput.disabled = adminActivo;
+    }
+
+    async function cargarInscripciones() {
+      lista.innerHTML = '<div class="empty">Cargando inscricións...</div>';
+
+      try {
+        const res = await fetch('/api/inscripciones');
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'No se pudieron cargar los datos');
+
+        if (!Array.isArray(data) || data.length === 0) {
+          lista.innerHTML = '<div class="empty">Aínda non hai persoas inscritas.</div>';
+          return;
+        }
+
+        lista.innerHTML = data.map(item => {
+          const fecha = item.fecha ? new Date(item.fecha).toLocaleString('gl-ES') : '';
+          const boton = adminActivo
+            ? `<button class="btn-danger" data-delete-id="${item.id}">Borrar</button>`
+            : '';
+
+          return `
+            <article class="item">
+              <div class="item-top">
+                <div>
+                  <div class="item-name">${escapeHtml(item.nombre || '')}</div>
+                  <div class="meta">Asistencia: ${escapeHtml(item.asistencia || 'Sí')}</div>
+                  <div class="meta">Comida: ${escapeHtml(traducirComida(item.comida || item.opcion || ''))}</div>
+                  <div class="meta">Data: ${escapeHtml(fecha)}</div>
+                </div>
+                ${boton}
+              </div>
+            </article>
+          `;
+        }).join('');
+      } catch (error) {
+        lista.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    function escapeHtml(texto) {
+      return String(texto)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    async function activarModoAdmin() {
+      const clave = adminKeyInput.value.trim();
+
+      if (!clave) {
+        setMessage(mensajeAdmin, 'Escribe la clave de administrador.', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'x-admin-key': clave }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'No autorizado');
+        }
+
+        adminKey = clave;
+        adminActivo = true;
+        actualizarUIAdmin();
+        setMessage(mensajeAdmin, 'Modo administrador activado.', 'success');
+        cargarInscripciones();
+      } catch (error) {
+        adminKey = '';
+        adminActivo = false;
+        actualizarUIAdmin();
+        setMessage(mensajeAdmin, error.message || 'No se pudo validar la clave.', 'error');
+      }
+    }
+
+    function salirModoAdmin() {
+      adminKey = '';
+      adminActivo = false;
+      adminKeyInput.value = '';
+      actualizarUIAdmin();
+      setMessage(mensajeAdmin, 'Modo administrador pechado.', 'success');
+      cargarInscripciones();
+    }
+
+    async function borrarInscripcion(id) {
+      if (!adminActivo || !adminKey) {
+        setMessage(mensajeAdmin, 'Activa primero el modo admin.', 'error');
+        return;
+      }
+
+      const confirmar = window.confirm('Seguro que queres borrar esta inscrición?');
+      if (!confirmar) return;
+
+      try {
+        const res = await fetch(`/api/admin/inscripciones/${id}`, {
+          method: 'DELETE',
+          headers: { 'x-admin-key': adminKey }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'No se pudo borrar');
+        }
+
+        setMessage(mensajeAdmin, 'Inscrición borrada correctamente.', 'success');
+        cargarInscripciones();
+      } catch (error) {
+        setMessage(mensajeAdmin, error.message || 'Error al borrar.', 'error');
+      }
+    }
+
+    async function descargarCsv() {
+      if (!adminActivo || !adminKey) {
+        setMessage(mensajeAdmin, 'Activa primero el modo admin.', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/export.csv', {
+          headers: { 'x-admin-key': adminKey }
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'No se pudo descargar el CSV');
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'inscripciones.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setMessage(mensajeAdmin, 'CSV descargado correctamente.', 'success');
+      } catch (error) {
+        setMessage(mensajeAdmin, error.message || 'Error al descargar CSV.', 'error');
+      }
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      setMessage(mensajeForm, '');
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const opcion = form.querySelector('input[name="opcion"]:checked')?.value;
+
+      if (!nombre || !opcion) {
+        setMessage(mensajeForm, 'Completa o nome e a opción de comida.', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/inscripciones', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, opcion })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'No se pudo guardar la inscripción');
+        }
+
+        form.reset();
+        setMessage(mensajeForm, 'Inscrición gardada correctamente.', 'success');
+        cargarInscripciones();
+      } catch (error) {
+        setMessage(mensajeForm, error.message || 'Error ao enviar.', 'error');
+      }
+    });
+
+    activarAdminBtn.addEventListener('click', activarModoAdmin);
+    salirAdminBtn.addEventListener('click', salirModoAdmin);
+    descargarCsvBtn.addEventListener('click', descargarCsv);
+
+    lista.addEventListener('click', (event) => {
+      const id = event.target.getAttribute('data-delete-id');
+      if (id) borrarInscripcion(id);
+    });
+
+    actualizarUIAdmin();
+    cargarInscripciones();
+  </script>
+</body>
+</html>
