@@ -10,7 +10,11 @@ const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID || '';
 const SHEET_NAME = process.env.GOOGLE_SHEET_NAME || 'Hoja 1';
 
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 function comprobarConfiguracion() {
   const faltan = [
